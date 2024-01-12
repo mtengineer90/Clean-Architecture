@@ -1,6 +1,14 @@
+import 'package:clean_architecture/features/daily_news/presentation/bloc/article/remote/remote_article_bloc.dart';
+import 'package:clean_architecture/features/daily_news/presentation/pages/home/daily_news.dart';
+import 'package:clean_architecture/injection_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+import 'config/theme/app_themes.dart';
+import 'features/daily_news/presentation/bloc/article/remote/remote_article_event.dart';
+
+Future<void> main() async {
+  await initDependencies();
   runApp(const MyApp());
 }
 
@@ -9,13 +17,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return BlocProvider<RemoteArticleBloc>(
+      //create: (context) => BlocProvider.of<RemoteArticleBloc>(context)..add(GetArticlesEvent()),
+      create: (context) => serviceLocator()..add(const GetArticlesEvent()),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: theme(),
+        debugShowCheckedModeBanner: false,
+        home: const DailyNews(),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

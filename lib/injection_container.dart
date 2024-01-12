@@ -1,5 +1,4 @@
 
-
 import 'package:clean_architecture/features/daily_news/data/data_sources/remote/news_api_service.dart';
 import 'package:clean_architecture/features/daily_news/data/repository/article_repository_impl.dart';
 import 'package:clean_architecture/features/daily_news/domain/repository/article_repository.dart';
