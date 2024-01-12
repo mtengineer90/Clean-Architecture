@@ -7,9 +7,14 @@ import 'package:clean_architecture/features/daily_news/presentation/bloc/article
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 
+import 'features/daily_news/data/data_sources/local/app_database.dart';
+
 final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
+
+  final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+  serviceLocator.registerSingleton<AppDatabase>(database);
 
   //Dio
   serviceLocator.registerSingleton<Dio>(Dio());
