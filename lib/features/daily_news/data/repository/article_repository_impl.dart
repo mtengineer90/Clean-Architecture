@@ -7,10 +7,13 @@ import 'package:clean_architecture/features/daily_news/domain/repository/article
 import 'dart:io';
 import 'package:dio/dio.dart';
 
+import '../data_sources/local/app_database.dart';
+
 class ArticleRepositoryImpl implements ArticleRepository {
   final NewsApiService _newsApiService;
+  final AppDatabase _appDatabase;
 
-  ArticleRepositoryImpl(this._newsApiService);
+  ArticleRepositoryImpl(this._newsApiService, this._appDatabase);
   @override
   Future<DataState<List<ArticleModel>>> getNewsArticles() async {
     try {
@@ -37,5 +40,21 @@ class ArticleRepositoryImpl implements ArticleRepository {
       return DataFailed(e);
     }
   }
+
+  @override
+  Future<List<ArticleModel>> getSavedArticles() async {
+    return _appDatabase.articleDAO.getArticles();
+  }
+
+  @override
+  Future<void> removeArticle(ArticleEntity article) {
+    return _appDatabase.articleDAO.deleteArticle(ArticleModel.fromEntity(article));
+  }
+
+  @override
+  Future<void> saveArticle(ArticleEntity article) {
+    return _appDatabase.articleDAO.insertArticle(ArticleModel.fromEntity(article));
+  }
+
 
 }
